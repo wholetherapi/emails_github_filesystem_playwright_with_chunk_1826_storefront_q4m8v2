@@ -1,0 +1,2 @@
+# emails_github_filesystem_playwright_with_chunk_1826_storefront_q4m8v2
+Northglow trade storefront (partner price preview)
