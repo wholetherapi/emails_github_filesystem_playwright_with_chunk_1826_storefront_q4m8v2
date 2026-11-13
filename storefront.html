@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Northglow Trade Storefront</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f2ee; color: #22201c; }
+  header { background: #16332d; color: #f4f2ee; padding: 28px 40px; }
+  header h1 { margin: 0; font-size: 28px; letter-spacing: .4px; }
+  header p { margin: 6px 0 0; opacity: .8; font-size: 14px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 24px 40px 60px; }
+  .destination { background: #fff; border: 1px solid #d9d3c7; border-radius: 10px; padding: 18px 20px; margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
+  .destination .field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+  .destination label { font-weight: 600; }
+  .destination select, .destination input { padding: 8px 10px; border: 1px solid #b9b2a4; border-radius: 6px; font-size: 14px; }
+  .destination button, .destination .reset { padding: 8px 14px; border-radius: 6px; border: 1px solid #16332d; background: #16332d; color: #fff; font-size: 14px; cursor: pointer; }
+  .destination .reset { background: transparent; color: #16332d; }
+  #destination-line { font-weight: 700; font-size: 15px; margin-left: auto; align-self: center; }
+  #banner { font-size: 13px; padding: 10px 14px; border-radius: 8px; background: #e5ece8; color: #23443a; margin-bottom: 18px; }
+  #banner.regional { background: #fdf1dc; color: #7a4c07; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+  .card { background: #fff; border: 1px solid #d9d3c7; border-radius: 12px; padding: 18px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card .sku { font-size: 12px; letter-spacing: .6px; color: #7d7669; text-transform: uppercase; }
+  .price-row { margin-top: 12px; font-size: 16px; }
+  .price { font-weight: 700; font-size: 22px; }
+  .availability { font-size: 13px; color: #2f6b4f; margin-left: 8px; }
+  .unavailable { color: #8a2c1f; font-size: 14px; }
+  .shipping { margin-top: 10px; font-size: 12px; color: #6f6a5f; }
+  footer { margin-top: 30px; font-size: 12px; color: #6f6a5f; line-height: 1.6; border-top: 1px solid #d9d3c7; padding-top: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Northglow Trade Storefront</h1>
+  <p>Partner price preview &middot; Q4 2026 assortment &middot; prices in USD</p>
+</header>
+<div class="wrap">
+  <div class="destination">
+    <div class="field">
+      <label for="country">Delivery country</label>
+      <select id="country">
+        <option value="GLOBAL">International (default)</option>
+        <option value="US">United States</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="zip">Postal code</label>
+      <input id="zip" type="text" placeholder="e.g. 10001" autocomplete="postal-code" />
+    </div>
+    <button id="apply">Update destination</button>
+    <button id="reset" class="reset">Reset to international</button>
+    <div id="destination-line">Delivery destination: International (default)</div>
+  </div>
+  <div id="banner">Showing the international catalogue.</div>
+  <div class="grid" id="products"></div>
+  <footer>
+    Prices shown for the international audience are the current catalogue offers.
+    Selecting a delivery destination displays regional warehouse stock, which can
+    include models that are not part of the international catalogue and are not
+    cleared for partner listings. Availability and prices are maintained by
+    Northglow Lighting Works and updated daily.
+  </footer>
+</div>
+
+<script id="catalog-data" type="application/json">
+{
+  "store": "Northglow Trade Storefront",
+  "updated": "2026-11-12",
+  "currency": "USD",
+  "products": [
+    {
+      "sku": "CSH-1402",
+      "model": "Willow Pendant",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 189.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 189.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-2217",
+      "model": "Alder Task Lamp",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 149.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 149.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-3185",
+      "model": "Ember Wall Sconce",
+      "offers": {
+        "US": {
+          "price_usd": 229.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "US warehouse stock. Not offered in the international catalogue."
+    },
+    {
+      "sku": "CSH-4033",
+      "model": "Harbor Floor Lamp",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 259.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 259.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-7091",
+      "model": "Driftwood Chandelier",
+      "offers": {
+        "US": {
+          "price_usd": 419.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "US warehouse stock. Not offered in the international catalogue."
+    },
+    {
+      "sku": "CSH-8120",
+      "model": "Lantern String Lights",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 79.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 79.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-9010",
+      "model": "Tidepool Accent Lamp",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 59.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 59.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-1027",
+      "model": "Marlow Table Lamp",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 219.0,
+          "availability": "Low stock"
+        },
+        "US": {
+          "price_usd": 219.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-7331",
+      "model": "Fern Wall Light",
+      "offers": {
+        "GLOBAL": {
+          "price_usd": 129.0,
+          "availability": "In Stock"
+        },
+        "US": {
+          "price_usd": 129.0,
+          "availability": "In Stock"
+        }
+      },
+      "shipping": "Ships from regional warehouses."
+    },
+    {
+      "sku": "CSH-8842",
+      "model": "Beacon Pendant",
+      "offers": {
+        "US": {
+          "price_usd": 309.0,
+          "availability": "Low stock"
+        }
+      },
+      "shipping": "US warehouse stock. Not offered in the international catalogue."
+    }
+  ]
+}
+</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('catalog-data').textContent);
+  var STORAGE_KEY = 'hh_trade_destination_q4m8v2';
+  var state = { country: 'GLOBAL', zip: '' };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.country === 'US' && parsed.zip) {
+          state = { country: 'US', zip: String(parsed.zip) };
+        }
+      }
+    } catch (e) { /* ignore */ }
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+  function clear() {
+    state = { country: 'GLOBAL', zip: '' };
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+  }
+  function region() { return state.country === 'US' ? 'US' : 'GLOBAL'; }
+  function destinationLine() {
+    if (state.country !== 'US') return 'Delivery destination: International (default)';
+    if (!state.zip) return 'Delivery destination: United States (enter a postal code)';
+    if (state.zip === '10001') return 'Deliver to: New York 10001';
+    return 'Deliver to: United States ' + state.zip;
+  }
+  function render() {
+    var reg = region();
+    var banner = document.getElementById('banner');
+    if (reg === 'US') {
+      banner.className = 'regional';
+      banner.textContent = 'Showing regional warehouse stock for United States. Regional stock is not part of the international catalogue.';
+    } else {
+      banner.className = '';
+      banner.textContent = 'Showing the international catalogue.';
+    }
+    document.getElementById('destination-line').textContent = destinationLine();
+    var host = document.getElementById('products');
+    host.innerHTML = '';
+    DATA.products.forEach(function (p) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.id = p.sku;
+      var offer = p.offers && p.offers[reg];
+      card.innerHTML =
+        '<div class="sku">' + p.sku + ' &middot; ' + DATA.store + '</div>' +
+        '<h3>' + p.model + '</h3>' +
+        '<div class="price-row">' + (offer
+          ? '<span class="price">$' + Number(offer.price_usd).toFixed(2) + '</span>' +
+            '<span class="availability">' + offer.availability + '</span>'
+          : '<span class="unavailable">Cannot be shipped to your selected delivery location.</span>') +
+        '</div>' +
+        '<div class="shipping">' + p.shipping + '</div>';
+      host.appendChild(card);
+    });
+  }
+  document.getElementById('country').addEventListener('change', function (e) {
+    state.country = e.target.value;
+    if (state.country !== 'US') { state.zip = ''; }
+    save(); render();
+  });
+  document.getElementById('apply').addEventListener('click', function () {
+    var country = document.getElementById('country').value;
+    var zip = document.getElementById('zip').value.trim();
+    if (country === 'US') {
+      if (!/^\d{5}$/.test(zip)) {
+        document.getElementById('destination-line').textContent = 'Enter a valid 5-digit US postal code.';
+        return;
+      }
+      state = { country: 'US', zip: zip };
+      save();
+    } else {
+      state = { country: 'GLOBAL', zip: '' };
+      save();
+    }
+    render();
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    clear();
+    document.getElementById('country').value = 'GLOBAL';
+    document.getElementById('zip').value = '';
+    render();
+  });
+  load();
+  if (state.country === 'US') {
+    document.getElementById('country').value = 'US';
+    document.getElementById('zip').value = state.zip;
+  }
+  render();
+})();
+</script>
+</body>
+</html>
